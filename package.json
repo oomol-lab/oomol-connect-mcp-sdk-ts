@@ -1,6 +1,6 @@
 {
   "name": "oomol-connect-mcp-sdk-ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP SDK for Oomol Connect - enables integration with Cherry Studio, VSCode, and other MCP clients",
   "type": "module",
   "engines": {
