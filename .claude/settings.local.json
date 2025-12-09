@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm version:*)",
+      "Bash(git push:*)",
+      "Bash(npm publish:*)"
+    ]
+  }
+}
