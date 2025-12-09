@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "oomol-connect": {
+      "command": "npx",
+      "args": ["-y", "oomol-connect-mcp-sdk-ts"],
+      "env": {
+        "OOMOL_CONNECT_BASE_URL": "http://localhost:3000/api",
+        "OOMOL_CONNECT_API_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
