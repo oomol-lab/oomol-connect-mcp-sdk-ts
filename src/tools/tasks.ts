@@ -24,7 +24,7 @@ export async function handleListTasks(connectClient: OomolConnectClient) {
  */
 export async function handleExecuteTask(
   args: {
-    manifest: string;
+    blockId: string;
     inputValues: any;
     pollIntervalMs?: number;
     timeoutMs?: number;
@@ -36,7 +36,7 @@ export async function handleExecuteTask(
   try {
     const result = await connectClient.tasks.run(
       {
-        manifest: args.manifest,
+        blockId: args.blockId,
         inputValues: args.inputValues,
       },
       {
@@ -65,7 +65,7 @@ export async function handleExecuteTask(
  */
 export async function handleExecuteTaskWithFiles(
   args: {
-    manifest: string;
+    blockId: string;
     inputValues: any;
     files: FileInput[];
     pollIntervalMs?: number;
@@ -80,7 +80,7 @@ export async function handleExecuteTaskWithFiles(
     const files = await convertToFiles(args.files);
 
     const result = await connectClient.tasks.runWithFiles(
-      args.manifest,
+      args.blockId,
       args.inputValues,
       files,
       {
@@ -109,14 +109,14 @@ export async function handleExecuteTaskWithFiles(
  */
 export async function handleCreateTask(
   args: {
-    manifest: string;
+    blockId: string;
     inputValues: any;
   },
   connectClient: OomolConnectClient
 ) {
   try {
     const result = await connectClient.tasks.create({
-      manifest: args.manifest,
+      blockId: args.blockId,
       inputValues: args.inputValues,
     });
     return formatSuccessResponse(result);

@@ -7,11 +7,12 @@
 ## 特性
 
 - ✅ 基于官方 `@modelcontextprotocol/sdk` 的完整 MCP 协议支持
-- ✅ 10 个工具覆盖 Oomol Connect 所有功能
+- ✅ 9 个工具覆盖 Oomol Connect 所有功能
 - ✅ 完整的 TypeScript 类型支持
 - ✅ 文件上传支持（本地路径和 base64 编码）
 - ✅ 指数退避的智能轮询策略
 - ✅ 实时进度监控
+- ✅ 智能版本过滤（默认只返回最新版本）
 - ✅ 轻松集成 Cherry Studio、VSCode、Claude Desktop
 
 ## 安装
@@ -108,21 +109,33 @@ export OOMOL_CONNECT_DEFAULT_TIMEOUT="300000"
 
 ### 高层工具（推荐，用户友好）
 
-1. **list_flows** - 列出所有可用的 flows
-2. **list_blocks** - 列出所有可用的 blocks
-3. **list_tasks** - 列出任务历史
-4. **execute_task** - 执行任务并等待结果（最常用）
-5. **execute_task_with_files** - 执行任务（含文件上传）
-6. **list_packages** - 列出已安装的包
-7. **install_package** - 安装包并等待完成
+1. **list_blocks** - 列出所有可用的 blocks（默认只返回最新版本，可选返回所有版本）
+2. **list_tasks** - 列出任务历史
+3. **execute_task** - 执行任务并等待结果（最常用）
+4. **execute_task_with_files** - 执行任务（含文件上传）
+5. **list_packages** - 列出已安装的包
+6. **install_package** - 安装包并等待完成
 
 ### 低层工具（高级用户，精细控制）
 
-8. **create_task** - 仅创建任务（异步，不等待）
-9. **get_task** - 查询任务状态
-10. **stop_task** - 停止运行中的任务
+1. **create_task** - 仅创建任务（异步，不等待）
+2. **get_task** - 查询任务状态
+3. **stop_task** - 停止运行中的任务
 
 ## 使用示例
+
+### 列出 Blocks
+
+```json
+{
+  "tool": "list_blocks",
+  "arguments": {
+    "includeAllVersions": false
+  }
+}
+```
+
+返回的每个 block 自动包含 `blockId`（格式：`"package::name"`）和 `version` 字段。
 
 ### 执行任务
 
@@ -130,10 +143,10 @@ export OOMOL_CONNECT_DEFAULT_TIMEOUT="300000"
 {
   "tool": "execute_task",
   "arguments": {
-    "manifest": "flows/my-flow.yaml",
+    "blockId": "audio-lab::text-to-audio",
     "inputValues": {
-      "input1": "value1",
-      "input2": 123
+      "text": "你好",
+      "voice": "zh-CN-XiaoxiaoNeural"
     },
     "pollIntervalMs": 2000,
     "timeoutMs": 300000
@@ -147,13 +160,13 @@ export OOMOL_CONNECT_DEFAULT_TIMEOUT="300000"
 {
   "tool": "execute_task_with_files",
   "arguments": {
-    "manifest": "flows/image-process.yaml",
+    "blockId": "ffmpeg::audio_video_separation",
     "inputValues": {
-      "processType": "resize"
+      "outputFormat": "mp3"
     },
     "files": [
       {
-        "path": "/absolute/path/to/image.jpg"
+        "path": "/absolute/path/to/video.mp4"
       }
     ]
   }

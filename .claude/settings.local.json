@@ -4,7 +4,9 @@
       "Bash(npm run build:*)",
       "Bash(npm version:*)",
       "Bash(git push:*)",
-      "Bash(npm publish:*)"
+      "Bash(npm publish:*)",
+      "Bash(rm:*)",
+      "Bash(npm install)"
     ]
   }
 }

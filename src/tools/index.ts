@@ -1,7 +1,6 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import type { OomolConnectClient } from "oomol-connect-sdk";
-import { handleListFlows } from "./flows.js";
 import { handleListBlocks } from "./blocks.js";
 import {
   handleListTasks,
@@ -20,19 +19,17 @@ import type { ServerOptions } from "../types.js";
 export function getToolsList() {
   return [
     {
-      name: "list_flows",
-      description: "List all available Oomol Connect flows with their metadata",
-      inputSchema: {
-        type: "object",
-        properties: {},
-      },
-    },
-    {
       name: "list_blocks",
-      description: "List all available Oomol Connect blocks with their metadata",
+      description: "List all available Oomol Connect blocks with their metadata. By default, returns only the latest version of each block. Use includeAllVersions=true to get all versions.",
       inputSchema: {
         type: "object",
-        properties: {},
+        properties: {
+          includeAllVersions: {
+            type: "boolean",
+            description: "Include all versions of each block (default: false, only returns latest version)",
+            default: false,
+          },
+        },
       },
     },
     {
@@ -50,9 +47,9 @@ export function getToolsList() {
       inputSchema: {
         type: "object",
         properties: {
-          manifest: {
+          blockId: {
             type: "string",
-            description: "Task manifest path (e.g., 'flows/my-flow.yaml')",
+            description: "Block ID in format 'package::block-name' (e.g., 'audio-lab::text-to-audio')",
           },
           inputValues: {
             type: "object",
@@ -75,7 +72,7 @@ export function getToolsList() {
             default: 10000,
           },
         },
-        required: ["manifest", "inputValues"],
+        required: ["blockId", "inputValues"],
       },
     },
     {
@@ -85,9 +82,9 @@ export function getToolsList() {
       inputSchema: {
         type: "object",
         properties: {
-          manifest: {
+          blockId: {
             type: "string",
-            description: "Task manifest path",
+            description: "Block ID in format 'package::block-name'",
           },
           inputValues: {
             type: "object",
@@ -131,7 +128,7 @@ export function getToolsList() {
             default: 10000,
           },
         },
-        required: ["manifest", "inputValues", "files"],
+        required: ["blockId", "inputValues", "files"],
       },
     },
     {
@@ -176,16 +173,16 @@ export function getToolsList() {
       inputSchema: {
         type: "object",
         properties: {
-          manifest: {
+          blockId: {
             type: "string",
-            description: "Task manifest path",
+            description: "Block ID in format 'package::block-name'",
           },
           inputValues: {
             type: "object",
             description: "Input values for the task",
           },
         },
-        required: ["manifest", "inputValues"],
+        required: ["blockId", "inputValues"],
       },
     },
     {
@@ -232,11 +229,8 @@ export function registerTools(
     const args = request.params.arguments as any;
 
     switch (toolName) {
-      case "list_flows":
-        return await handleListFlows(connectClient);
-
       case "list_blocks":
-        return await handleListBlocks(connectClient);
+        return await handleListBlocks(connectClient, args);
 
       case "list_tasks":
         return await handleListTasks(connectClient);

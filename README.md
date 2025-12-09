@@ -7,11 +7,12 @@ MCP (Model Context Protocol) SDK for Oomol Connect, enabling integration with Ch
 ## Features
 
 - ✅ Full MCP protocol support based on official `@modelcontextprotocol/sdk`
-- ✅ 10 tools covering all Oomol Connect functionality
+- ✅ 9 tools covering all Oomol Connect functionality
 - ✅ Complete TypeScript type support
 - ✅ File upload support (local paths and base64 encoding)
 - ✅ Intelligent polling with exponential backoff
 - ✅ Real-time progress monitoring
+- ✅ Smart version filtering (returns latest version by default)
 - ✅ Easy integration with Cherry Studio, VSCode, Claude Desktop
 
 ## Installation
@@ -108,21 +109,33 @@ Configure in VSCode settings or use the MCP extension.
 
 ### High-Level Tools (Recommended)
 
-1. **list_flows** - List all available flows
-2. **list_blocks** - List all available blocks
-3. **list_tasks** - List task history
-4. **execute_task** - Execute task and wait for completion (most common)
-5. **execute_task_with_files** - Execute task with file uploads
-6. **list_packages** - List installed packages
-7. **install_package** - Install package and wait for completion
+1. **list_blocks** - List all available blocks (returns latest version by default, optionally all versions)
+2. **list_tasks** - List task history
+3. **execute_task** - Execute task and wait for completion (most common)
+4. **execute_task_with_files** - Execute task with file uploads
+5. **list_packages** - List installed packages
+6. **install_package** - Install package and wait for completion
 
 ### Low-Level Tools (Advanced)
 
-8. **create_task** - Create task without waiting (async)
-9. **get_task** - Query task status
-10. **stop_task** - Stop running task
+1. **create_task** - Create task without waiting (async)
+2. **get_task** - Query task status
+3. **stop_task** - Stop running task
 
 ## Usage Examples
+
+### List Blocks
+
+```json
+{
+  "tool": "list_blocks",
+  "arguments": {
+    "includeAllVersions": false
+  }
+}
+```
+
+Each block automatically includes `blockId` (format: `"package::name"`) and `version` fields.
 
 ### Execute a Task
 
@@ -130,10 +143,10 @@ Configure in VSCode settings or use the MCP extension.
 {
   "tool": "execute_task",
   "arguments": {
-    "manifest": "flows/my-flow.yaml",
+    "blockId": "audio-lab::text-to-audio",
     "inputValues": {
-      "input1": "value1",
-      "input2": 123
+      "text": "Hello",
+      "voice": "en-US-JennyNeural"
     },
     "pollIntervalMs": 2000,
     "timeoutMs": 300000
@@ -147,13 +160,13 @@ Configure in VSCode settings or use the MCP extension.
 {
   "tool": "execute_task_with_files",
   "arguments": {
-    "manifest": "flows/image-process.yaml",
+    "blockId": "ffmpeg::audio_video_separation",
     "inputValues": {
-      "processType": "resize"
+      "outputFormat": "mp3"
     },
     "files": [
       {
-        "path": "/absolute/path/to/image.jpg"
+        "path": "/absolute/path/to/video.mp4"
       }
     ]
   }
