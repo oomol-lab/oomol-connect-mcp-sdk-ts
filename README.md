@@ -44,8 +44,7 @@ npm run build
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
 | `OOMOL_CONNECT_BASE_URL` | API base URL | Yes | - |
-| `OOMOL_CONNECT_API_TOKEN` | API token (recommended) | Either/Or | - |
-| `OOMOL_CONNECT_AUTH_HEADER` | Full Authorization header | Either/Or | - |
+| `OOMOL_CONNECT_API_TOKEN` | API token | Yes | - |
 | `MCP_SERVER_NAME` | MCP server name | No | "oomol-connect" |
 | `MCP_SERVER_VERSION` | MCP server version | No | package.json version |
 | `OOMOL_CONNECT_DEFAULT_TIMEOUT` | Default timeout (ms) | No | 300000 (5 min) |
@@ -55,11 +54,7 @@ npm run build
 ```bash
 # Required
 export OOMOL_CONNECT_BASE_URL="http://localhost:3000/api"
-
-# Authentication (choose one)
-export OOMOL_CONNECT_API_TOKEN="your-token-here"
-# or
-export OOMOL_CONNECT_AUTH_HEADER="Bearer your-token-here"
+export OOMOL_CONNECT_API_TOKEN="api-your-token-here"
 
 # Optional
 export OOMOL_CONNECT_DEFAULT_TIMEOUT="300000"

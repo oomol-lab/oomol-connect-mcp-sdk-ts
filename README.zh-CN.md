@@ -44,8 +44,7 @@ npm run build
 | 变量名 | 说明 | 是否必需 | 默认值 |
 |--------|------|---------|--------|
 | `OOMOL_CONNECT_BASE_URL` | API 基础 URL | 是 | - |
-| `OOMOL_CONNECT_API_TOKEN` | API Token（推荐） | 二选一 | - |
-| `OOMOL_CONNECT_AUTH_HEADER` | 完整的 Authorization 头 | 二选一 | - |
+| `OOMOL_CONNECT_API_TOKEN` | API Token | 是 | - |
 | `MCP_SERVER_NAME` | MCP Server 名称 | 否 | "oomol-connect" |
 | `MCP_SERVER_VERSION` | MCP Server 版本 | 否 | package.json 版本 |
 | `OOMOL_CONNECT_DEFAULT_TIMEOUT` | 默认超时时间(毫秒) | 否 | 300000 (5分钟) |
@@ -55,11 +54,7 @@ npm run build
 ```bash
 # 必需配置
 export OOMOL_CONNECT_BASE_URL="http://localhost:3000/api"
-
-# 认证方式（二选一）
-export OOMOL_CONNECT_API_TOKEN="your-token-here"
-# 或
-export OOMOL_CONNECT_AUTH_HEADER="Bearer your-token-here"
+export OOMOL_CONNECT_API_TOKEN="api-your-token-here"
 
 # 可选配置
 export OOMOL_CONNECT_DEFAULT_TIMEOUT="300000"
@@ -184,7 +179,7 @@ import { OomolConnectMcpServer } from "oomol-connect-mcp-sdk-ts";
 
 const server = new OomolConnectMcpServer({
   baseUrl: "http://localhost:3000/api",
-  authHeader: "Bearer your-token",
+  authHeader: "api-your-token-here",
   name: "my-server",
   version: "1.0.0",
 });

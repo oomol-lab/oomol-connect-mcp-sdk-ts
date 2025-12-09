@@ -4,24 +4,21 @@ async function main() {
   // 从环境变量读取配置
   const baseUrl = process.env.OOMOL_CONNECT_BASE_URL;
   const apiToken = process.env.OOMOL_CONNECT_API_TOKEN;
-  const authHeader = process.env.OOMOL_CONNECT_AUTH_HEADER;
 
   if (!baseUrl) {
     console.error("Error: OOMOL_CONNECT_BASE_URL environment variable is required");
     process.exit(1);
   }
 
-  if (!apiToken && !authHeader) {
-    console.error(
-      "Error: Either OOMOL_CONNECT_API_TOKEN or OOMOL_CONNECT_AUTH_HEADER must be set"
-    );
+  if (!apiToken) {
+    console.error("Error: OOMOL_CONNECT_API_TOKEN environment variable is required");
     process.exit(1);
   }
 
   // 创建 MCP Server
   const server = new OomolConnectMcpServer({
     baseUrl,
-    authHeader: apiToken ? `Bearer ${apiToken}` : authHeader!,
+    authHeader: apiToken,
     name: "oomol-connect-example",
     version: "1.0.0",
   });

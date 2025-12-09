@@ -68,7 +68,7 @@ async function testConnection() {
     console.log('         "cwd": "/Users/wushuang/code/oomol-connect-sdk/oomol-connect-mcp-sdk-ts",');
     console.log('         "env": {');
     console.log(`           "OOMOL_CONNECT_BASE_URL": "${baseUrl}",`);
-    console.log(`           "OOMOL_CONNECT_AUTH_HEADER": "${apiKey}"`);
+    console.log(`           "OOMOL_CONNECT_API_TOKEN": "${apiKey}"`);
     console.log('         }');
     console.log('       }');
     console.log('     }');

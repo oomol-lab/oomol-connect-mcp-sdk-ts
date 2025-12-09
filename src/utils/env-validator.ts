@@ -13,20 +13,17 @@ export function validateAndLoadConfig(): ServerOptions {
   }
 
   const apiToken = process.env.OOMOL_CONNECT_API_TOKEN;
-  const authHeader = process.env.OOMOL_CONNECT_AUTH_HEADER;
 
-  if (!apiToken && !authHeader) {
+  if (!apiToken) {
     throw new Error(
-      "Either OOMOL_CONNECT_API_TOKEN or OOMOL_CONNECT_AUTH_HEADER must be set\n" +
-      "Examples:\n" +
-      "  export OOMOL_CONNECT_API_TOKEN=your-token-here\n" +
-      "  export OOMOL_CONNECT_AUTH_HEADER=\"Bearer your-token-here\""
+      "OOMOL_CONNECT_API_TOKEN environment variable is required\n" +
+      "Example: export OOMOL_CONNECT_API_TOKEN=api-your-token-here"
     );
   }
 
   return {
     baseUrl,
-    authHeader: apiToken ? `Bearer ${apiToken}` : authHeader!,
+    authHeader: apiToken,
     name: process.env.MCP_SERVER_NAME,
     version: process.env.MCP_SERVER_VERSION,
     defaultTimeoutMs: parseInt(

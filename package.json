@@ -33,7 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
-    "oomol-connect-sdk": "file:../oomol-connect-sdk-ts"
+    "oomol-connect-sdk": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
