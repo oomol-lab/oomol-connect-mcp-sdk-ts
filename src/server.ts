@@ -1,8 +1,7 @@
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { OomolConnectClient } from "oomol-connect-sdk";
-import { registerTools, getToolsList } from "./tools/index.js";
+import { registerTools } from "./tools/index.js";
 import type { ServerOptions } from "./types.js";
 
 /**
@@ -10,7 +9,7 @@ import type { ServerOptions } from "./types.js";
  * 提供 MCP 协议接口，封装 oomol-connect-sdk 的功能
  */
 export class OomolConnectMcpServer {
-  private mcpServer: Server;
+  private mcpServer: McpServer;
   private connectClient: OomolConnectClient;
 
   constructor(options: ServerOptions) {
@@ -23,7 +22,7 @@ export class OomolConnectMcpServer {
     });
 
     // 初始化 MCP Server
-    this.mcpServer = new Server(
+    this.mcpServer = new McpServer(
       {
         name: options.name ?? "oomol-connect",
         version: options.version ?? "1.0.0",
@@ -35,15 +34,8 @@ export class OomolConnectMcpServer {
       }
     );
 
-    // 注册所有 Tools（处理 CallToolRequestSchema）
+    // 注册所有 Tools
     registerTools(this.mcpServer, this.connectClient, options);
-
-    // 注册 tools/list handler（返回所有可用工具的列表）
-    this.mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {
-      return {
-        tools: getToolsList(),
-      };
-    });
   }
 
   /**
